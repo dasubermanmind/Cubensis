@@ -13,7 +13,6 @@ all: ${OBJECTS}
 ./build/helpers/buffer.o: ./helpers/buffer.c
 	gcc ./helpers/buffer.c ${INCLUDES} -o ./build/helpers/buffer.o -g -c
 
-
 ./build/helpers/vector.o: ./helpers/vector.c
 	gcc ./helpers/vector.c ${INCLUDES} -o ./build/helpers/vector.o -g -c
 
