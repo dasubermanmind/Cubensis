@@ -65,7 +65,7 @@ struct lex_process_functions
 struct lex_process
 {
     struct pos pos;
-    struct vector *toke_vec;
+    struct vector *token_vec;
     struct compile_process *compiler;
 
     int current_expression_cnt;
