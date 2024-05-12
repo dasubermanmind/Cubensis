@@ -98,12 +98,11 @@ int compile_file(const char *file_name, const char *out_file, int flags);
 
 struct compile_process *compile_process_create(const char *file_name, const char *outfile, int flags);
 
-
 char compile_process_next_char(struct lex_process *lex_process);
 
 char compile_process_peek_char(struct lex_process *lex_process);
 
-char compile_process_push_char(struct lex_process *lex_process, char ch);
+void compile_process_push_char(struct lex_process *lex_process, char ch);
 
 struct lex_process *lex_process_create(struct compile_process *compiler, struct lex_process_functions *functions, void *private);
 

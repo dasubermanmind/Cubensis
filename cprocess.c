@@ -50,7 +50,7 @@ char compile_process_peek_char(struct lex_process *lex_process)
     return ch;
 }
 
-char compile_process_push_char(struct lex_process *lex_process, char ch)
+void compile_process_push_char(struct lex_process *lex_process, char ch)
 {
     struct compile_process *compiler = lex_process->compiler;
     ungetc(ch, compiler->cfile.fp);
