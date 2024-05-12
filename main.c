@@ -9,7 +9,7 @@ int main()
     {
         printf("Compiled Everything without errors");
     }
-    else if(result == COMPILER_FILE_FAILED)
+    else if(result == COMPILER_FAILED_WITH_ERRORS)
     {
         printf("Compiled Failed with errors");
     }

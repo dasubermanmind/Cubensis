@@ -25,7 +25,7 @@ struct compile_process *compile_process_create(const char *file_name, const char
     struct compile_process *process = calloc(1, sizeof(struct compile_process));
     process->flags = flags;
     process->cfile.fp = file;
-    process->output = outfile;
+    process->output = file_out;
     return process;
 }
 

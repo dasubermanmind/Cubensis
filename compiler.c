@@ -1,7 +1,6 @@
-
 #include "compiler.h"
 
-struct lex_process_fns compiler_lex_fns =
+struct lex_process_functions compiler_lex_functions =
     {
         .next_char = compile_process_next_char,
         .peek_char = compile_process_peek_char,
@@ -9,15 +8,23 @@ struct lex_process_fns compiler_lex_fns =
 
 int compile_file(const char *file_name, const char *out_file, int flags)
 {
-    struct compile_process *process = compile_process(file_name, out_file, flags);
+    struct compile_process *process = compile_process_create(file_name, out_file, flags);
     if (!process)
     {
-        return COMPILER_FILE_FAILED;
+        return COMPILER_FAILED_WITH_ERRORS;
     }
 
     // TODO:
     // Lex Analysis
-    struct lex_process *lex_process = lex_process_create(process, &compiler_lex_fns, NULL);
+    struct lex_process *lex_process = lex_process_create(process, &compiler_lex_functions, NULL);
+    if (!lex_process)
+    {
+        return COMPILER_FAILED_WITH_ERRORS;
+    }
+    if (lex(lex_process) != LEXICAL_ANALYSIS_ALL_OK)
+    {
+        return COMPILER_FAILED_WITH_ERRORS;
+    }
     // Parse
 
     // Code Gen
