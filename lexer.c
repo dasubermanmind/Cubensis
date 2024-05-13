@@ -42,11 +42,10 @@ const char *read_number_str()
     const char *num = NULL;
     struct buffer *buffer = buffer_create();
     char ch = peekc();
-
     LEX_GETC_IF(buffer, ch, (ch >= '0' && ch <= '9'));
 
-    buffer_write(buffer, 0x00); // null terminator
-    return buffer_ptr(buffer);
+    buffer_write(buffer, 0x00); // null term
+    return buffer_ptr(buffer); 
 }
 
 static struct pos lex_file_position()
@@ -91,12 +90,12 @@ struct token *read_next_token()
         token = token_make_number();
         break;
 
-        case EOF:
-            break;
+    case EOF:
+        break;
 
-        default:
-            printf("Unsupported unicode");
-            compiler_error(lex_process->compiler, "Unknown error");
+    default:
+        printf("Unsupported unicode");
+        compiler_error(lex_process->compiler, "Unknown error");
     }
 
     return token;
