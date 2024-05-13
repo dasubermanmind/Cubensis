@@ -6,7 +6,7 @@ struct lex_process *lex_process_create(struct compile_process *compiler, struct 
 {
     struct lex_process *process = calloc(1, sizeof(struct lex_process));
     process->functions = functions;
-    process->toke_vec = vector_create(sizeof(struct token));
+    process->token_vec = vector_create(sizeof(struct token));
     process->compiler = compiler;
     process->private = private;
     process->pos.line = 1;
@@ -17,7 +17,7 @@ struct lex_process *lex_process_create(struct compile_process *compiler, struct 
 // free the struct create
 void lex_process_free(struct lex_process *process)
 {
-    vector_free(process->toke_vec);
+    vector_free(process->token_vec);
     free(process);
 }
 
@@ -28,5 +28,5 @@ void *lex_process_private(struct lex_process *process)
 
 struct vector *lex_process_tokens(struct lex_process *process)
 {
-    return process->toke_vec;
+    return process->token_vec;
 }

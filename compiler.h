@@ -12,6 +12,19 @@ struct pos
     const char *file_name;
 };
 
+#define NUMERIC_CASE \
+    case '0':       \
+    case '1':       \
+    case '2':       \
+    case '3':       \
+    case '4':       \
+    case '5':       \
+    case '6':       \
+    case '7':       \
+    case '8':       \
+    case '9' 
+
+
 enum
 {
     LEXICAL_ANALYSIS_ALL_OK,
@@ -21,20 +34,21 @@ enum
 // enums get set to token->type
 enum
 {
-    TOKE_TYPE_IDENTIFIER,
-    TOKE_TYPE_KEYWORD,
-    TOKE_TYPE_OPERATOR,
-    TOKE_TYPE_SYMBOL,
-    TOKE_TYPE_NUMBER,
-    TOKE_TYPE_STRING,
-    TOKE_TYPE_COMMENT,
-    TOKE_TYPE_NEWLINE
+    TOKEN_TYPE_IDENTIFIER,
+    TOKEN_TYPE_KEYWORD,
+    TOKEN_TYPE_OPERATOR,
+    TOKEN_TYPE_SYMBOL,
+    TOKEN_TYPE_NUMBER,
+    TOKEN_TYPE_STRING,
+    TOKEN_TYPE_COMMENT,
+    TOKEN_TYPE_NEWLINE
 };
 
 struct token
 {
     int type;
     int flags;
+    struct pos pos;
     // share mem
     union
     {
@@ -113,5 +127,9 @@ void *lex_process_private(struct lex_process *process);
 struct vector *lex_process_tokens(struct lex_process *process);
 
 int lex(struct lex_process *process);
+
+void compiler_error(struct compile_process *compiler, const char *msg, ...);
+
+void compiler_warning(struct compile_process *compiler, const char *msg, ...);
 
 #endif
