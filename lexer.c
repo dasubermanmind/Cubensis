@@ -3,16 +3,42 @@
 #include "helpers/buffer.h"
 #include <string.h>
 
-#define LEX_GETC_IF(buffer, c, exp)      \
+#define LEX_GETC_IF(buffer, c, exp)     \
     for (c = peekc(); exp; c = peekc()) \
-    {                                    \
-        buffer_write(buffer, c);         \
-        nextc();                         \
+    {                                   \
+        buffer_write(buffer, c);        \
+        nextc();                        \
     }
 
+struct token *read_next_token()
+{
+    // read each character and convert to a Token obj
+    // initial token obj
+    struct token *token = NULL;
+    char ch = peekc();
+    switch (ch)
+    {
+    NUMERIC_CASE:
+        token = token_make_number();
+        break;
 
+    case ' ':
+    case '\t':
+        token = handle_whitespace();
+        break;
+    case EOF:
+        break;
+
+    default:
+        printf("Unsupported unicode");
+        compiler_error(lex_process->compiler, "Unknown error");
+    }
+
+    return token;
+}
 
 static struct token temp_token;
+
 static struct lex_process *lex_process;
 
 static char peekc()
@@ -37,6 +63,23 @@ static void pushc(char c)
     lex_process->functions->push_char(lex_process, c);
 }
 
+static struct token *handle_whitespace()
+{
+    struct token *last_token = lexer_last_token();
+    if (last_token)
+    {
+        last_token->whitespace = true;
+    }
+
+    nextc();
+    return read_next_token();
+}
+
+static struct token *lexer_last_token()
+{
+    return vector_back_or_null(lex_process->token_vec);
+}
+
 const char *read_number_str()
 {
     const char *num = NULL;
@@ -45,7 +88,7 @@ const char *read_number_str()
     LEX_GETC_IF(buffer, ch, (ch >= '0' && ch <= '9'));
 
     buffer_write(buffer, 0x00); // null term
-    return buffer_ptr(buffer); 
+    return buffer_ptr(buffer);
 }
 
 static struct pos lex_file_position()
@@ -60,7 +103,6 @@ struct token *token_create(struct token *_token)
     return &temp_token;
 }
 
-
 unsigned long long read_number()
 {
     const char *s = read_number_str();
@@ -69,36 +111,13 @@ unsigned long long read_number()
 
 struct token *token_make_number_for_value(unsigned long number)
 {
-    return token_create(&(struct token){.type=TOKEN_TYPE_NUMBER,.llnum=number});
+    return token_create(&(struct token){.type = TOKEN_TYPE_NUMBER, .llnum = number});
 }
 
 struct token *token_make_number()
 {
     unsigned long number = read_number();
     return token_make_number(number);
-}
-
-struct token *read_next_token()
-{
-    // read each character and convert to a Token obj
-    // initial token obj
-    struct token *token = NULL;
-    char ch = peekc();
-    switch (ch)
-    {
-        NUMERIC_CASE:
-        token = token_make_number();
-        break;
-
-    case EOF:
-        break;
-
-    default:
-        printf("Unsupported unicode");
-        compiler_error(lex_process->compiler, "Unknown error");
-    }
-
-    return token;
 }
 
 int lex(struct lex_process *process)
