@@ -10,6 +10,10 @@
         nextc();                        \
     }
 
+static struct token temp_token;
+
+static struct lex_process *lex_process;
+
 struct token *read_next_token()
 {
     // read each character and convert to a Token obj
@@ -36,10 +40,6 @@ struct token *read_next_token()
 
     return token;
 }
-
-static struct token temp_token;
-
-static struct lex_process *lex_process;
 
 static char peekc()
 {

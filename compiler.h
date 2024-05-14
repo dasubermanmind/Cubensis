@@ -13,17 +13,16 @@ struct pos
 };
 
 #define NUMERIC_CASE \
-    case '0':       \
-    case '1':       \
-    case '2':       \
-    case '3':       \
-    case '4':       \
-    case '5':       \
-    case '6':       \
-    case '7':       \
-    case '8':       \
-    case '9' 
-
+    case '0':        \
+    case '1':        \
+    case '2':        \
+    case '3':        \
+    case '4':        \
+    case '5':        \
+    case '6':        \
+    case '7':        \
+    case '8':        \
+    case '9'
 
 enum
 {
@@ -131,5 +130,21 @@ int lex(struct lex_process *process);
 void compiler_error(struct compile_process *compiler, const char *msg, ...);
 
 void compiler_warning(struct compile_process *compiler, const char *msg, ...);
+struct token *token_make_number();
+struct token *token_make_number_for_value(unsigned long number);
+unsigned long long read_number();
+struct token *token_create(struct token *_token);
+
+static struct pos lex_file_position();
+
+const char *read_number_str();
+static struct token *lexer_last_token();
+static struct token *handle_whitespace();
+static void pushc(char c);
+static char nextc();
+static char peekc();
+
+
+
 
 #endif

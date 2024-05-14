@@ -1,15 +1,15 @@
-#include <stdio.h> 
+#include <stdio.h>
 #include "helpers/vector.h"
 #include "compiler.h"
 
 int main()
 {
     int result = compile_file("./test.c", "./test", 0);
-    if(result == COMPILER_FILE_OK)
+    if (result == COMPILER_FILE_OK)
     {
         printf("Compiled Everything without errors");
     }
-    else if(result == COMPILER_FAILED_WITH_ERRORS)
+    else if (result == COMPILER_FAILED_WITH_ERRORS)
     {
         printf("Compiled Failed with errors");
     }
@@ -20,6 +20,3 @@ int main()
 
     return 0;
 }
-
-
-
