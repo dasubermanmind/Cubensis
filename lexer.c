@@ -10,14 +10,11 @@
         nextc();                        \
     }
 
-
 struct token *read_next_token();
 
 static struct lex_process *lex_process;
 
 static struct token temp_token;
-
-
 
 static char peekc()
 {
@@ -53,7 +50,6 @@ struct token *token_create(struct token *_token)
     return &temp_token;
 }
 
-
 static struct token *lexer_last_token()
 {
     return vector_back_or_null(lex_process->token_vec);
@@ -70,7 +66,6 @@ static struct token *handle_whitespace()
     nextc();
     return read_next_token();
 }
-
 
 const char *read_number_str()
 {
@@ -91,7 +86,7 @@ unsigned long long read_number()
 
 struct token *token_make_number_for_value(unsigned long number)
 {
-    return token_create(&(struct token){.type=TOKEN_TYPE_NUMBER,.llnum=number});
+    return token_create(&(struct token){.type = TOKEN_TYPE_NUMBER, .llnum = number});
 }
 
 struct token *token_make_number()
@@ -103,31 +98,31 @@ struct token *read_next_token()
 {
     struct token *token = NULL;
     char c = peekc();
-    switch(c)
+    switch (c)
     {
-        NUMERIC_CASE:
+    NUMERIC_CASE:
         token = token_make_number();
         break;
 
-        // We don't care about whitespace ignore them
-        case ' ':
-        case '\t':
+    // We don't care about whitespace ignore them
+    case ' ':
+    case '\t':
         token = handle_whitespace();
         break;
 
-        case EOF:
-            // We have finished lexical analysis on the file
+    case EOF:
+        // We have finished lexical analysis on the file
         break;
 
-        default:
-            compiler_error(lex_process->compiler, "Unexpected token\n");
+    default:
+        compiler_error(lex_process->compiler, "Unexpected token\n");
     }
     return token;
 }
 
 int lex(struct lex_process *process)
 {
-    
+
     process->current_expression_cnt = 0;
     lex_process = process;
     process->paren_buff = NULL;
