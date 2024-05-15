@@ -30,7 +30,7 @@ int compile_file(const char *file_name, const char *out_file, int flags)
         return COMPILER_FAILED_WITH_ERRORS;
     }
     // Parse
-
+    // Optimize    
     // Code Gen
     return COMPILER_FILE_OK;
 }

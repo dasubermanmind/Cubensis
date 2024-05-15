@@ -16,6 +16,22 @@ static struct lex_process *lex_process;
 
 static struct token temp_token;
 
+static struct token *make_string_token(char start, char end)
+{
+    struct buffer *buffer = buffer_create();
+    char ch = nextc();
+
+    for(;ch !=end && ch!=EOF; ch =nextc())
+    {
+        // escape
+        if(ch == '\\'){}
+        buffer_write(buffer, ch);
+    }
+    buffer_write(buffer, 0x00);
+    return token_create(&(struct token){.type=TOKEN_TYPE_STRING, .sval=buffer_ptr(buffer)});
+}
+
+
 static char peekc()
 {
     return lex_process->functions->peek_char(lex_process);
@@ -109,7 +125,8 @@ struct token *read_next_token()
     case '\t':
         token = handle_whitespace();
         break;
-
+    case '"':
+        token = make_string_token('"', '"');
     case EOF:
         // We have finished lexical analysis on the file
         break;
