@@ -18,6 +18,7 @@ static struct token temp_token;
 
 static struct token *make_string_token(char start, char end)
 {
+    assert(start < end);
     struct buffer *buffer = buffer_create();
     char ch = nextc();
 
