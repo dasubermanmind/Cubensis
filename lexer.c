@@ -135,6 +135,66 @@ const char *read_op()
     }
 }
 
+static bool is_single_operator(char op)
+{
+    return op == '+' ||
+           op == '-' ||
+           op == '/' ||
+           op == '*' ||
+           op == '=' ||
+           op == '>' ||
+           op == '<' ||
+           op == '|' ||
+           op == '&' ||
+           op == '^' ||
+           op == '%' ||
+           op == '!' ||
+           op == '(' ||
+           op == '[' ||
+           op == ',' ||
+           op == '.' ||
+           op == '~' ||
+           op == '?';
+}
+
+bool op_valid(const char *op)
+{
+    return S_EQ(op, "+") ||
+           S_EQ(op, "-") ||
+           S_EQ(op, "*") ||
+           S_EQ(op, "/") ||
+           S_EQ(op, "!") ||
+           S_EQ(op, "^") ||
+           S_EQ(op, "+=") ||
+           S_EQ(op, "-=") ||
+           S_EQ(op, "*=") ||
+           S_EQ(op, "/=") ||
+           S_EQ(op, ">>") ||
+           S_EQ(op, "<<") ||
+           S_EQ(op, ">=") ||
+           S_EQ(op, "<=") ||
+           S_EQ(op, ">") ||
+           S_EQ(op, "<") ||
+           S_EQ(op, "||") ||
+           S_EQ(op, "&&") ||
+           S_EQ(op, "|") ||
+           S_EQ(op, "&") ||
+           S_EQ(op, "++") ||
+           S_EQ(op, "--") ||
+           S_EQ(op, "=") ||
+           S_EQ(op, "!=") ||
+           S_EQ(op, "==") ||
+           S_EQ(op, "->") ||
+           S_EQ(op, "(") ||
+           S_EQ(op, "[") ||
+           S_EQ(op, ",") ||
+           S_EQ(op, ".") ||
+           S_EQ(op, "...") ||
+           S_EQ(op, "~") ||
+           S_EQ(op, "?") ||
+           S_EQ(op, "%");
+}
+
 // TODO: Implement next
 static struct token *token_make_operator_or_string()
 {

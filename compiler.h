@@ -12,6 +12,9 @@ struct pos
     const char *file_name;
 };
 
+#define S_EQ(str, str2) \
+        (str && str2 && (strcmp(str, str2) == 0))
+
 #define NUMERIC_CASE \
     case '0':        \
     case '1':        \
