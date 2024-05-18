@@ -2,6 +2,7 @@
 #include "helpers/vector.h"
 #include "helpers/buffer.h"
 #include <string.h>
+#include <assert.n>
 
 #define LEX_GETC_IF(buffer, c, exp)     \
     for (c = peekc(); exp; c = peekc()) \
@@ -18,7 +19,8 @@ static struct token temp_token;
 
 static struct token *make_string_token(char start, char end)
 {
-    assert(start < end);
+    assert(nextc() == start);
+
     struct buffer *buffer = buffer_create();
     char ch = nextc();
 
@@ -111,6 +113,34 @@ struct token *token_make_number()
     return token_make_number_for_value(read_number());
 }
 
+// handles join operators
+static bool op_treated_as_one(char operator)
+{
+    return operator == '(' || operator == '[' || operator == '.' || operator == ',' || operator == '*' || operator == '?';
+}
+
+const char *read_op()
+{
+    bool single_op = true;
+    char op = nextc();
+    struct buffer *buffer = buffer_create();
+
+    buffer_write(buffer, op);
+    if(!op_trate_as_one(op))
+    {
+        // continue, via peak to see if they can be joine
+        op = peek();
+        // now check to see if there's the second part of teh join ie ++ or --  or || or *** etc
+
+    }
+}
+
+// TODO: Implement next
+static struct token *token_make_operator_or_string()
+{
+    return NULL;
+}
+
 struct token *read_next_token()
 {
     struct token *token = NULL;
@@ -120,7 +150,9 @@ struct token *read_next_token()
     NUMERIC_CASE:
         token = token_make_number();
         break;
-
+    OPERATOR_CASE_EXCLUDING_DIVISION:
+        token = token_make_operator_or_string();
+        break;
     // We don't care about whitespace ignore them
     case ' ':
     case '\t':
