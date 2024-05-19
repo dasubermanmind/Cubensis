@@ -195,6 +195,21 @@ bool op_valid(const char *op)
            S_EQ(op, "%");
 }
 
+void read_op_flush_back_keep_first(struct buffer* buffer)
+{
+    const char* data = buffer_ptr(buffer);
+    int len = buffer->len;
+    for (int i = len-1; i>= 1; i--)
+    {
+        if (data[i] == 0x00)
+        {
+            continue;
+        }
+
+        pushc(data[i]);
+    }
+}
+
 // TODO: Implement next
 static struct token *token_make_operator_or_string()
 {
