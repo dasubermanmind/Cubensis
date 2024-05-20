@@ -131,7 +131,10 @@ const char *read_op()
         // continue, via peak to see if they can be joine
         op = peek();
         // now check to see if there's the second part of teh join ie ++ or --  or || or *** etc
-
+        if(is_single_op(op)
+        {
+            // should push a delim
+        }
     }
 }
 
