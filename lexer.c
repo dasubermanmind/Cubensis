@@ -121,20 +121,36 @@ static bool op_treated_as_one(char operator)
 
 const char *read_op()
 {
-    bool single_op = true;
+    bool single_operator = true;
     char op = nextc();
     struct buffer *buffer = buffer_create();
-
     buffer_write(buffer, op);
-    if(!op_trate_as_one(op))
+
+    if (!op_treated_as_one(op))
     {
-        // continue, via peak to see if they can be joine
-        op = peek();
-        // now check to see if there's the second part of teh join ie ++ or --  or || or *** etc
-        if(is_single_op(op)
+        op = peekc();
+        if (is_single_operator(op))
         {
-            // should push a delim
+            buffer_write(buffer, op);
+            nextc();
+            single_operator = false;
         }
+    }
+
+    // NULL TERMINATOR
+    buffer_write(buffer, 0x00);
+    char *ptr = buffer_ptr(buffer);
+    if (!single_operator)
+    {
+        if (!op_valid(ptr))
+        {
+            read_op_flush_back_keep_first(buffer);
+            ptr[1] = 0x00;
+        }
+    }
+    else if(!op_valid(ptr))
+    {
+        compiler_error(lex_process->compiler, "The operator %s is not valid\n", ptr);
     }
 }
 
